@@ -1,9 +1,6 @@
 import React from 'react'
 import { Layout, Typography, Button, Space, Card, Divider } from 'antd'
-import { 
-  HeartOutlined, 
-  HomeOutlined 
-} from '@ant-design/icons'
+import * as AntIcons from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from '../contexts/ThemeContext'
 
@@ -15,7 +12,7 @@ const Dashboard: React.FC = () => {
   const { theme } = useTheme()
   
   return (
-    <Content style={{ padding: '0 50px', minHeight: 'calc(100vh - 64px - 70px)' }}>
+    <Content>
       <div className="content-container">
         <Title level={2}>{t('welcome')}</Title>
         <Paragraph>
@@ -24,17 +21,19 @@ const Dashboard: React.FC = () => {
         
         <Divider />
         
-        <Space direction="vertical" size="large" style={{ width: '100%' }}>
-          <Card title={t('quick_actions')} bordered={false}>
-            <Space>
-              <Button type="primary" icon={<HomeOutlined />}>{t('dashboard')}</Button>
-              <Button icon={<HeartOutlined />}>{t('bookings')}</Button>
-              <Button>{t('rooms')}</Button>
-              <Button>{t('guests')}</Button>
+        <Space direction='vertical' size="large" style={{ width: '100%' }}>
+          <Card title={t('actions')} variant='outlined'>
+            <Space wrap>
+              <Button icon={<AntIcons.PlusCircleOutlined />}> {t('bookings')} </Button>
+              <Button icon={<AntIcons.HomeOutlined />}> {t('rooms')} </Button>
+              <Button icon={<AntIcons.ContactsOutlined />}> {t('guests')} </Button>
+              <Button icon={<AntIcons.BellOutlined />}> {t('services')} </Button>
+              <Button icon={<AntIcons.CreditCardOutlined />}> {t('payments')} </Button>
+              <Button icon={<AntIcons.PercentageOutlined />}> {t('promotions')} </Button>
             </Space>
           </Card>
           
-          <Card title={t('system_stats')} bordered={false}>
+          <Card title={t('system_stats')} variant='outlined'>
             <div className="stats-grid" style={{ display: 'flex', justifyContent: 'space-between' }}>
               <Card.Grid style={{ width: '25%', textAlign: 'center' }}>
                 <Title level={3}>42</Title>

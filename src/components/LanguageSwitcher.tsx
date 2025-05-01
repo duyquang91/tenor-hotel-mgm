@@ -19,7 +19,6 @@ const LanguageSwitcher: React.FC = () => {
         defaultValue={i18n.language}
         onChange={changeLanguage}
       >
-        <Option value="en">English</Option>
         <Option value="vi">Tiếng Việt</Option>
         {/* Add more languages here as needed */}
       </Select>

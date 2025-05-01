@@ -3,14 +3,10 @@ import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 
 // Import all translation files
-import translationEN from './locales/en.json'
 import translationVI from './locales/vi.json'
 
 // Resources object with translations
 const resources = {
-  en: {
-    translation: translationEN
-  },
   vi: {
     translation: translationVI
   }

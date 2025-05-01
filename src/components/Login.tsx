@@ -10,7 +10,6 @@ const { Title } = Typography
 interface LoginFormValues {
   username: string
   password: string
-  remember: boolean
 }
 
 const Login: React.FC = () => {
@@ -26,8 +25,7 @@ const Login: React.FC = () => {
     // Simulate API call
     setTimeout(() => {
       // Demo credentials check (in a real app, this would be handled by a backend API)
-      if (values.username === 'admin' && values.password === 'password') {
-        message.success(t('login_success'))
+      if (values.username === 'admin' && values.password === 'admin') {
         
         // Dispatch login action to Redux store
         dispatch(login({ 
@@ -36,7 +34,6 @@ const Login: React.FC = () => {
           isLoggedIn: true 
         }))
       } else {
-        message.error(t('login_failed'))
         setLoginError(t('login_failed'))
       }
       setLoading(false)
@@ -100,10 +97,7 @@ const Login: React.FC = () => {
           </Form.Item>
 
           <Form.Item>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Form.Item name="remember" valuePropName="checked" noStyle>
-                <Checkbox>{t('remember_me')}</Checkbox>
-              </Form.Item>
+            <div style={{ display: 'flex', justifyContent: 'right' }}>
               <a href="#forgot">{t('forgot_password')}</a>
             </div>
           </Form.Item>
@@ -123,7 +117,7 @@ const Login: React.FC = () => {
         
         <div style={{ textAlign: 'center' }}>
           <p>{t('demo_credentials')}</p>
-          <p>Username: admin / Password: password</p>
+          <p>Username: admin / Password: admin</p>
         </div>
       </Card>
     </div>
