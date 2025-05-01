@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout } from 'antd'
+import { Layout, Menu } from 'antd'
 import { GithubOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import Login from './components/Login'
@@ -8,6 +8,7 @@ import AppHeader from './components/AppHeader'
 import { ThemeProvider, useTheme } from './contexts/ThemeContext'
 import { useAppSelector } from './redux/hooks'
 import './App.css'
+import Container from './components/Container'
 
 const { Header, Footer } = Layout
 
@@ -35,7 +36,7 @@ const AppContent: React.FC = () => {
         <AppHeader />
       </Header>
       
-      <Dashboard />
+      <Container />
       
       <Footer style={{ textAlign: 'center' }}>
         {t('footer', { year: new Date().getFullYear() })}

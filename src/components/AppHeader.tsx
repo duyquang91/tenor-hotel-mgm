@@ -49,15 +49,6 @@ const AppHeader: React.FC<AppHeaderProps> = () => {
       <Typography.Title level={4} style={{ margin: 0, color: 'white' }}>
         {t('app_title')}
       </Typography.Title>
-      <div className="header-controls">
-        <ThemeSwitcher />
-        <LanguageSwitcher />
-        <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
-          <Button icon={<UserOutlined />} style={{ marginLeft: 16 }}>
-            {user?.username}
-          </Button>
-        </Dropdown>
-      </div>
     </Header>
   )
 }
