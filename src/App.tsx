@@ -9,7 +9,7 @@ import { ThemeProvider, useTheme } from './contexts/ThemeContext'
 import { useAppSelector } from './redux/hooks'
 import './App.css'
 
-const { Footer } = Layout
+const { Header, Footer } = Layout
 
 const AppContent: React.FC = () => {
   const { t } = useTranslation()
@@ -23,7 +23,17 @@ const AppContent: React.FC = () => {
   
   return (
     <Layout className="layout">
-      <AppHeader />
+      <Header 
+        style={{ 
+          position: 'sticky', 
+          top: 0, 
+          zIndex: 1, 
+          width: '100%',
+          padding: 0
+        }}
+      >
+        <AppHeader />
+      </Header>
       
       <Dashboard />
       

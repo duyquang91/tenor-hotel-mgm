@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form, Input, Button, Card, Typography, Checkbox, message } from 'antd'
+import { Form, Input, Button, Card, Typography, Checkbox, message, Alert } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch } from '../redux/hooks'
@@ -16,10 +16,12 @@ interface LoginFormValues {
 const Login: React.FC = () => {
   const { t } = useTranslation()
   const [loading, setLoading] = useState(false)
+  const [loginError, setLoginError] = useState<string | null>(null)
   const dispatch = useAppDispatch()
 
   const handleSubmit = (values: LoginFormValues) => {
     setLoading(true)
+    setLoginError(null)
     
     // Simulate API call
     setTimeout(() => {
@@ -35,6 +37,7 @@ const Login: React.FC = () => {
         }))
       } else {
         message.error(t('login_failed'))
+        setLoginError(t('login_failed'))
       }
       setLoading(false)
     }, 1000)
@@ -58,6 +61,15 @@ const Login: React.FC = () => {
         <div style={{ textAlign: 'center', marginBottom: 24 }}>
           <Title level={2}>{t('app_title')}</Title>
         </div>
+        
+        {loginError && (
+          <Alert
+            message={loginError}
+            type="error"
+            showIcon
+            style={{ marginBottom: 16 }}
+          />
+        )}
         
         <Form
           name="login"
