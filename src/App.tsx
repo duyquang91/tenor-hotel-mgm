@@ -23,28 +23,7 @@ const AppContent: React.FC = () => {
   }
   
   return (
-    <Layout className="layout">
-      <Header 
-        style={{ 
-          position: 'sticky', 
-          top: 0, 
-          zIndex: 1, 
-          width: '100%',
-          padding: 0
-        }}
-      >
-        <AppHeader />
-      </Header>
-      
-      <Container />
-      
-      <Footer style={{ textAlign: 'center' }}>
-        {t('footer', { year: new Date().getFullYear() })}
-        <div>
-          <GithubOutlined style={{ fontSize: '18px', margin: '8px' }} />
-        </div>
-      </Footer>
-    </Layout>
+    <Container />
   )
 }
 
