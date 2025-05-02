@@ -1,36 +1,29 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RoomModelType } from "../../models/RoomModel";
-
-const mockRooms = [
-    {
-        id: "1",
-        name: "Room 101",
-        description: "A cozy room with a beautiful view.",
-        imageUrl: "https://example.com/room101.jpg",
-        numberOfBeds: 2,
-        status: "available",
-    },
-    {
-        id: "2",
-        name: "Room 102",
-        description: "A spacious room with modern amenities.",
-        imageUrl: "https://example.com/room102.jpg",
-        numberOfBeds: 1,
-        status: "occupied",
-    },
-]
 
 const roomsSlice = createSlice({
   name: "rooms",
     initialState: {
-        rooms: mockRooms,
+        isLoading: false,
+        error: null,
+        rooms: [] as RoomModelType[],
     },
     reducers: {
-        fetchRooms: (state) => {
-            state.rooms = mockRooms
-        }
+        fetchRoomsStart: (state) => {
+            state.isLoading = true
+            state.error = null
+        },
+        fetchRoomsSuccess: (state, action) => {
+            state.isLoading = false
+            state.error = null
+            state.rooms = action.payload
+        },
+        fetchRoomsError: (state, action) => {
+            state.isLoading = false
+            state.error = action.payload
+        },
   }
 })
 
-export const { fetchRooms } = roomsSlice.actions
+export const { fetchRoomsStart, fetchRoomsSuccess, fetchRoomsError } = roomsSlice.actions
 export default roomsSlice.reducer

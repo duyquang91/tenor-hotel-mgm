@@ -7,32 +7,27 @@ interface RoomModelType {
     description: string 
     imageUrl: string
     numberOfBeds: number
+    roomType: string
     status: string
 }
 
-function useRoomStatus(status: string): { color: string | undefined; title: string } {
-    const { t } = useTranslation();
-    const roomStatus = RoomStatus[status as keyof typeof RoomStatus];
-    return {
-        color: roomStatus.color.primary,
-        title: t(status),
-    }
+const getRoomStatusColor = (status: string) => {
+    return RoomStatus[status as keyof typeof RoomStatus].color
 }
 
 const RoomStatus = {
-    available: { color: Colors.green },
-    occupied: { color: Colors.orange },
-    cleaning: { color: Colors.yellow },
-    reserved: { color: Colors.blue },
-    unavailable: { color: Colors.red },
+    available: { color: 'green' },
+    occupied: { color: 'red' },
+    cleaning: { color: 'orange' },
+    reserved: { color: 'blue' },
+    unavailable: { color: 'gray' },
 };
 
-enum BedType {
-    Single = 'Single',
-    Double = 'Double',
-    Queen = 'Queen',
-    King = 'King',
+const RoomType = {
+    president: 'president',
+    premium: 'premium',
+    standard: 'standard',
 }
 
-export { RoomStatus, useRoomStatus }
-export type { BedType, RoomModelType }
+export { RoomType, RoomStatus, getRoomStatusColor }
+export type { RoomModelType }

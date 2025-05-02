@@ -41,5 +41,12 @@
   "occupied": "Đang sử dụng",
   "cleaning": "Đang dọn dẹp",
   "room_name": "Tên Phòng",
-  "status": "Trạng Thái"
+  "status": "Trạng Thái",
+  "refresh": "Làm Mới",
+  "create": "Tạo Mới",
+  "room_type": "Loại Phòng",
+  "president": "Tổng Thống",
+  "premium": "Cao Cấp",
+  "standard": "Tiêu Chuẩn",
+  "action": "Thao Tác"
 }

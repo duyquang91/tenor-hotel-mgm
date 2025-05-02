@@ -21,7 +21,6 @@ const Container: React.FC = () => {
                 <Typography.Title level={5} style={{ paddingLeft: 32 }}> <Icons.HomeOutlined /> {!getCollapsed && t('app_title')} </Typography.Title>
                 <Menu mode='inline' title='Action' defaultOpenKeys={['1']}>
                     <Menu.SubMenu key='1' icon={<Icons.EditOutlined />} title={t('actions')}>
-                        <Menu.Item key="1.1" icon={<Icons.UserAddOutlined />}> {t('bookings')} </Menu.Item>
                         <Menu.Item key="1.2" icon={<Icons.HomeOutlined />}> {t('rooms')} </Menu.Item>
                         <Menu.Item key="1.3" icon={<Icons.ContactsOutlined />}> {t('guests')} </Menu.Item>
                         <Menu.Item key="1.4" icon={<Icons.BellOutlined />}> {t('services')} </Menu.Item>
@@ -40,7 +39,7 @@ const Container: React.FC = () => {
                 </Menu>
             </Sider>
 
-            <Content style={{ margin: 8, height: '100vh'}}>
+            <Content style={{ paddingTop:8, height: '100vh'}}>
                 <RoomListCard />
             </Content>
 
