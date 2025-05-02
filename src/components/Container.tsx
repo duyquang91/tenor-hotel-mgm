@@ -1,23 +1,23 @@
-import { Card, Divider, Layout, Menu, Space, Switch, Typography } from 'antd'
+import { Card, Menu, Typography, Layout } from 'antd'
 import * as Icons from '@ant-design/icons'
-import React, { use, useState } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { logout } from '../redux/slices/authSlice'
 import { useAppDispatch } from '../redux/hooks'
 import { useTheme } from '../contexts/ThemeContext'
 import Sider from 'antd/es/layout/Sider'
-import { Content, Header } from 'antd/es/layout/layout'
+import { Content } from 'antd/es/layout/layout'
 
 const Container: React.FC = () => {
     const { t } = useTranslation()
     const dispatch = useAppDispatch()
     const { theme, toggleTheme } = useTheme()
-    const [ getCollapsed, setCollapsed ] = useState(false)
+    const [getCollapsed, setCollapsed] = useState(false)
 
     return (
         <Layout>
-            <Sider className='ant-sider' theme={theme} width='260' style={{margin:8, borderRadius:8}} collapsible onCollapse={(e) => { setCollapsed(e) }} >
-                <Typography.Title level={5} style={{paddingLeft:32}}> <Icons.HomeOutlined/> {!getCollapsed && t('app_title')} </Typography.Title>
+            <Sider className='ant-sider' theme={theme} width='260' style={{ margin: 8, borderRadius: 8 }} collapsible onCollapse={(e) => { setCollapsed(e) }} >
+                <Typography.Title level={5} style={{ paddingLeft: 32 }}> <Icons.HomeOutlined /> {!getCollapsed && t('app_title')} </Typography.Title>
                 <Menu mode='inline' title='Action' defaultOpenKeys={['1']}>
                     <Menu.SubMenu key='1' icon={<Icons.EditOutlined />} title={t('actions')}>
                         <Menu.Item key="1.1" icon={<Icons.UserAddOutlined />}> {t('bookings')} </Menu.Item>
@@ -39,11 +39,11 @@ const Container: React.FC = () => {
                 </Menu>
             </Sider>
 
-<Content style={{margin:8}}>
-<Card style={{height:'100vh'}}>
+            <Content style={{ margin: 8 }}>
+                <Card style={{ height: '100vh' }}>
 
-</Card>
-</Content>
+                </Card>
+            </Content>
 
         </Layout>
     )
