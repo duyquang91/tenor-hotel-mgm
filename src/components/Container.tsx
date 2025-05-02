@@ -7,6 +7,7 @@ import { useAppDispatch } from '../redux/hooks'
 import { useTheme } from '../contexts/ThemeContext'
 import Sider from 'antd/es/layout/Sider'
 import { Content } from 'antd/es/layout/layout'
+import RoomListCard from './RoomListCard'
 
 const Container: React.FC = () => {
     const { t } = useTranslation()
@@ -39,10 +40,8 @@ const Container: React.FC = () => {
                 </Menu>
             </Sider>
 
-            <Content style={{ margin: 8 }}>
-                <Card style={{ height: '100vh' }}>
-
-                </Card>
+            <Content style={{ margin: 8, height: '100vh'}}>
+                <RoomListCard />
             </Content>
 
         </Layout>

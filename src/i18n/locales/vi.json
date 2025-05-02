@@ -33,5 +33,13 @@
   "login_success": "Đăng nhập thành công!",
   "login_failed": "Tên đăng nhập hoặc mật khẩu không hợp lệ. Vui lòng thử lại.",
   "logout": "Đăng Xuất",
-  "demo_credentials": "Đối với mục đích trình diễn, hãy sử dụng:"
+  "demo_credentials": "Đối với mục đích trình diễn, hãy sử dụng:",
+
+  "available": "Sẵn Sàng",
+  "unavailable": "Không có sẵn",
+  "reserved": "Đã Đặt Trước",
+  "occupied": "Đang sử dụng",
+  "cleaning": "Đang dọn dẹp",
+  "room_name": "Tên Phòng",
+  "status": "Trạng Thái"
 }
