@@ -46,6 +46,11 @@ body {
   box-shadow: 0 1px 3px var(--shadow-color);
 }
 
+.ant-sider {
+  background: var(--card-bg);
+  color: var(--text-color);
+}
+
 /* Card styles */
 .ant-card {
   background: var(--card-bg);
