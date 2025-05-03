@@ -7,6 +7,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 // Import i18n configuration
 import './i18n';
+import RoomListCard from './components/RoomListCard';
+import * as AntD from 'antd';
+import { ThemeProvider } from './contexts/ThemeContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,7 +17,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <ThemeProvider>
+        <AntD.App>
+          <App />
+        </AntD.App>
+      </ThemeProvider>
     </Provider>
   </React.StrictMode>
 );

@@ -7,12 +7,12 @@ import Container from './components/Container'
 
 const AppContent: React.FC = () => {
   const { isAuthenticated } = useAppSelector(state => state.auth)
-  
+
   // If user is not authenticated, show login page
   if (!isAuthenticated) {
     return <Login />
   }
-  
+
   return (
     <Container />
   )
@@ -20,9 +20,7 @@ const AppContent: React.FC = () => {
 
 function App() {
   return (
-    <ThemeProvider>
-      <AppContent />
-    </ThemeProvider>
+    <AppContent />
   )
 }
 
