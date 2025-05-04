@@ -49,5 +49,7 @@
   "premium": "Cao Cấp",
   "standard": "Tiêu Chuẩn",
   "action": "Thao Tác",
-  "error": "Lỗi"
+  "error": "Lỗi",
+  "add_new_room": "Thêm Phòng Mới",
+  "add_new_room_type": "Thêm Loại Phòng Mới"
 }

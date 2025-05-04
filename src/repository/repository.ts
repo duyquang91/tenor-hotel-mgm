@@ -1,26 +1,84 @@
-import { RoomModelType } from "../models/RoomModel";
+import { RoomModelType, RoomType } from "../models/RoomModel"
 
-const getAllRooms = ():Promise<RoomModelType[]> => {
+export const getAllRooms = (): Promise<RoomModelType[]> => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            if (Math.random() > 0.5) {
-                reject(new Error("This is a random mock error for testing"))
-            } else { 
-                const roomTypes = ['standard', 'president', 'premium'];
-                const statuses = ['available', 'occupied', 'unavailable', 'cleaning', 'reserved'];
-                const rooms = Array.from({ length: 50 }, (_, index) => ({
-                    id: (index + 1).toString(),
-                    name: `Room ${100 + index + 1}`,
-                    description: "A room with randomly generated attributes.",
-                    imageUrl: `https://example.com/room${100 + index + 1}.jpg`,
-                    roomType: roomTypes[Math.floor(Math.random() * roomTypes.length)],
-                    numberOfBeds: Math.floor(Math.random() * 3) + 1, 
-                    status: statuses[Math.floor(Math.random() * statuses.length)],
-                }));
-                resolve(rooms);
-            }
+            const rooms = JSON.parse(localStorage.getItem("rooms") || "[]")
+            resolve(rooms)
         }, 1000)
     })
 }
 
-export { getAllRooms };
+export const updateOrCreateRoom = (room: RoomModelType): Promise<RoomModelType> => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const rooms: RoomModelType[] = JSON.parse(localStorage.getItem("rooms") || "[]")
+            const index = rooms.findIndex(r => r.id === room.id)
+            if (index === -1) {
+                rooms.push(room)
+            } else { 
+                rooms[index] = room
+            }
+            localStorage.setItem("rooms", JSON.stringify(rooms))
+            resolve(room)
+        }, 1000)
+    })
+}
+
+export const deleteRoom = (roomId: string): Promise<RoomModelType[]> => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const rooms: RoomModelType[] = JSON.parse(localStorage.getItem("rooms") || "[]")
+            const index = rooms.findIndex(r => r.id === roomId)
+            if (index === -1) { 
+                reject(new Error("Room not found"))
+            } else {
+                rooms.splice(index, 1)
+                localStorage.setItem("rooms", JSON.stringify(rooms))
+            }
+            resolve(rooms)
+        }, 1000)
+    })
+}
+
+export const getAllRoomTypes = (): Promise<RoomType[]> => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const roomTypes = JSON.parse(localStorage.getItem("roomTypes") || "[]")
+            resolve(roomTypes)
+        }, 1000)
+    })
+}
+
+export const updateOrCreateRoomType = (roomType: RoomType): Promise<RoomType> => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const roomTypes: RoomType[] = JSON.parse(localStorage.getItem("roomTypes") || "[]")
+            const index = roomTypes.findIndex(rt => rt.id === roomType.id)
+            if (index === -1) {
+                roomTypes.push(roomType)
+            } else { 
+                roomTypes[index] = roomType
+            }
+            localStorage.setItem("roomTypes", JSON.stringify(roomTypes))
+            resolve(roomType)
+        }, 1000)
+    })
+}
+
+export const deleteRoomType = (roomTypeId: string): Promise<RoomType[]> => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const roomTypes: RoomType[] = JSON.parse(localStorage.getItem("roomTypes") || "[]")
+            const index = roomTypes.findIndex(rt => rt.id === roomTypeId)
+            if (index === -1) { 
+                reject(new Error("Room type not found"))
+            } else {
+                roomTypes.splice(index, 1)
+                localStorage.setItem("roomTypes", JSON.stringify(roomTypes))
+            }
+            resolve(roomTypes)
+        }, 1000)
+    })
+}
+

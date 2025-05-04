@@ -1,33 +1,30 @@
 import * as Colors from '@ant-design/colors'
-import { useTranslation } from 'react-i18next'
 
-interface RoomModelType {
+export interface RoomModelType {
     id: string
     name: string
-    description: string 
+    description: string
     imageUrl: string
     numberOfBeds: number
-    roomType: string
-    status: string
+    roomType: RoomType
+    status: RoomStatusType
 }
 
-const getRoomStatusColor = (status: string) => {
-    return RoomStatus[status as keyof typeof RoomStatus].color
+export enum RoomStatusEnum {
+    available = 'available',
+    occupied = 'occupied',
+    unavailable = 'unavailable',
+    cleaning = 'cleaning',
+    reserved = 'reserved'
 }
 
-const RoomStatus = {
-    available: { color: 'green' },
-    occupied: { color: 'red' },
-    cleaning: { color: 'orange' },
-    reserved: { color: 'blue' },
-    unavailable: { color: 'gray' },
-};
-
-const RoomType = {
-    president: 'president',
-    premium: 'premium',
-    standard: 'standard',
+export interface RoomStatusType {
+    key: string
+    color: string
 }
 
-export { RoomType, RoomStatus, getRoomStatusColor }
-export type { RoomModelType }
+export interface RoomType {
+    id: string
+    name: string
+    description: string | undefined
+}

@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { RoomModelType } from "../../models/RoomModel";
-import * as Repo from "../../repository/repository";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { RoomModelType } from "../../models/RoomModel"
+import * as Repo from "../../repository/repository"
 
 export const fetchAllRooms = createAsyncThunk<RoomModelType[]>('rooms/fetch', async (_, thunk) => {
     return await Repo.getAllRooms()
