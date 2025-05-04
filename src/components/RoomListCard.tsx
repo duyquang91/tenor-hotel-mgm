@@ -76,6 +76,7 @@ const RoomListCard: React.FC = () => {
             </Modal>
 
             <Modal
+                title={t('add_new_room_type')}
                 open={showRoomTypeList}
                 destroyOnClose
                 cancelButtonProps={{ style: { display: 'none' } }}

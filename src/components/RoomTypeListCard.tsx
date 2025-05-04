@@ -1,9 +1,10 @@
-import { App, Button, Card, Divider, Form, Input, Space, Table } from 'antd'
+import { App, Button, Card, Divider, Form, Input, Layout, Space, Table, Typography } from 'antd'
 import * as Repo from '../repository/repository'
 import { useTranslation } from 'react-i18next'
 import { RoomType } from '../models/RoomModel'
 import { useEffect, useState } from 'react'
 import * as Icons from '@ant-design/icons'
+import { TableRowSelection } from 'antd/es/table/interface'
 
 export const RoomTypeListCard: React.FC<{ onChange: (roomTypes: RoomType[]) => void }> = (prop) => {
     const [t] = useTranslation()
@@ -44,32 +45,59 @@ export const RoomTypeListCard: React.FC<{ onChange: (roomTypes: RoomType[]) => v
     }
 
     return (
-        <Card title={t('add_new_room_type')} style={{ margin: 16 }}>
-            <Form form={form} layout='vertical' onFinish={addNewRoomType}>
-                <Form.Item label="id" name="id" rules={[{ required: true, message: t('required') }]}>
+        <Space direction='vertical' style={{ width: '100%' }}>
+            <Form style={{ paddingTop: 16 }} labelCol={{ span: 5 }} labelAlign='left' form={form} layout='horizontal' onFinish={addNewRoomType}>
+                <Form.Item label="id" name="id" rules={[{ required: true, whitespace: true, message: t('required') }]}>
                     <Input allowClear />
                 </Form.Item>
-                <Form.Item label={t('name')} name="name" rules={[{ required: true, message: t('required') }]}>
+                <Form.Item label={t('name')} name="name" rules={[{ required: true, whitespace: true, message: t('required') }]}>
                     <Input allowClear />
                 </Form.Item>
                 <Form.Item label="description" name="description">
                     <Input allowClear />
                 </Form.Item>
                 <Form.Item>
-                    <Space direction="horizontal">
-                        <Button type="primary" htmlType="submit">
-                            <Icons.PlusOutlined />
-                        </Button>
-                    </Space>
+                    <Button type="primary" htmlType="submit">
+                        <Icons.PlusOutlined />
+                    </Button>
                 </Form.Item>
             </Form>
 
-            <Divider />
+            {/* <Divider /> */}
 
-            <Table bordered loading={isLoading} dataSource={roomTypes} columns={[
-                { title: 'id', key: 'id', dataIndex: 'id' },
-                { title: 'name', key: 'name', dataIndex: 'name' },
-                { title: 'description', key: 'description', dataIndex: 'description' }]} />
-        </Card>
+            <Table
+                bordered
+                loading={isLoading}
+                dataSource={roomTypes}
+                columns={[
+                    { title: 'id', dataIndex: 'id' },
+                    { title: 'name', dataIndex: 'name' },
+                    { title: 'description', dataIndex: 'description' },
+                    {
+                        title: 'action',
+                        render: (text, record) =>
+                            <Button
+                                size='small'
+                                onClick={() => { 
+                                    setIsLoading(true)
+                                    Repo.deleteRoomType(record.id)
+                                        .then((res) => {
+                                            message.success(t('success'))
+                                            setRoomTypes(res)
+                                            prop.onChange(res)
+                                        })
+                                        .catch((error) => {
+                                            message.error(error.message)
+                                        })
+                                        .finally(() => {
+                                            setIsLoading(false)
+                                        })
+                                }}>
+                                <Icons.DeleteOutlined />
+                            </Button>
+                    },
+                ]}
+            />
+        </Space>
     )
 }
