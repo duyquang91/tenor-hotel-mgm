@@ -6,7 +6,7 @@ import Icon, * as Icons from "@ant-design/icons"
 import { useEffect, useState } from "react"
 import { fetchAllRooms } from "../redux/slices/roomsSlice"
 import * as Repo from "../repository/repository"
-import { RoomTypeListCard } from "./RoomTypeList"
+import { RoomTypeListCard } from "./RoomTypeListCard"
 import { ok } from "assert"
 
 const RoomListCard: React.FC = () => {
