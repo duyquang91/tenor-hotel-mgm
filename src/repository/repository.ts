@@ -50,7 +50,7 @@ export const getAllRoomTypes = (): Promise<RoomType[]> => {
     })
 }
 
-export const updateOrCreateRoomType = (roomType: RoomType): Promise<RoomType> => {
+export const updateOrCreateRoomType = (roomType: RoomType): Promise<RoomType[]> => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             const roomTypes: RoomType[] = JSON.parse(localStorage.getItem("roomTypes") || "[]")
@@ -61,7 +61,7 @@ export const updateOrCreateRoomType = (roomType: RoomType): Promise<RoomType> =>
                 roomTypes[index] = roomType
             }
             localStorage.setItem("roomTypes", JSON.stringify(roomTypes))
-            resolve(roomType)
+            resolve(roomTypes)
         }, 1000)
     })
 }

@@ -14,6 +14,8 @@ export default [
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     rules: {
+      'no-unused-import': 'warn', // Disallows unused imports
+      'no-unused-vars': 'warn', // Disallows unused variables
       'semi': ['warn', 'never'], // Disallows semicolons
       'no-extra-semi': 'warn',   // Disallows unnecessary semicolons
       'semi-spacing': ['warn', { 'before': false, 'after': true }] // Enforces spacing around semicolons if they do exist

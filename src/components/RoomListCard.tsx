@@ -1,4 +1,4 @@
-import { App, Button, Card, Dropdown, Flex, Space, Table, Tag, Typography, MenuProps, Modal } from "antd"
+import { App, Button, Card, Dropdown, Flex, Space, Table, Tag, Typography, Modal } from "antd"
 import { useTranslation } from "react-i18next"
 import { useAppDispatch, useAppSelector } from "../redux/hooks"
 import { RoomStatusEnum, RoomType } from "../models/RoomModel"
@@ -7,15 +7,16 @@ import { useEffect, useState } from "react"
 import { fetchAllRooms } from "../redux/slices/roomsSlice"
 import * as Repo from "../repository/repository"
 import { RoomTypeListCard } from "./RoomTypeListCard"
-import { ok } from "assert"
+import { NewRoomCard } from "./NewRoomCard"
 
 const RoomListCard: React.FC = () => {
     const { t } = useTranslation()
     const { isLoading, rooms, error } = useAppSelector(state => state.rooms)
     const dispatch = useAppDispatch()
     const { modal } = App.useApp()
-    const [ roomTypes, setRoomTypes] = useState<RoomType[]>([])
-    const [ showRoomTypeList , setShowRoomTypeList ] = useState(false)
+    const [roomTypes, setRoomTypes] = useState<RoomType[]>([])
+    const [showRoomTypeList, setShowRoomTypeList] = useState(false)
+    const [showAddNewRoom, setShowAddNewRoom] = useState(false)
 
     useEffect(() => {
         dispatch(fetchAllRooms())
@@ -46,7 +47,8 @@ const RoomListCard: React.FC = () => {
                         {
                             icon: <Icons.FileAddOutlined />,
                             key: 'add_new_room',
-                            label: t('add_new_room')
+                            label: t('add_new_room'),
+                            onClick: () => { setShowAddNewRoom(true) }
                         },
                         {
                             icon: <Icons.FolderAddOutlined />,
@@ -55,7 +57,7 @@ const RoomListCard: React.FC = () => {
                             onClick: () => { setShowRoomTypeList(true) }
                         }]
                 }}>
-                    <Button title={t('create')}><Icons.PlusOutlined/></Button>
+                    <Button title={t('create')}><Icons.PlusOutlined /></Button>
                 </Dropdown>
                 <Button title={t('refresh')} onClick={() => dispatch(fetchAllRooms())}><Icons.ReloadOutlined /></Button>
             </Space>
@@ -64,10 +66,25 @@ const RoomListCard: React.FC = () => {
 
     return (
         <Card title={title}>
-            <Modal open={showRoomTypeList} closable={false} cancelButtonProps={{ style: { display: 'none' } }} onOk={() => setShowRoomTypeList(false)}>
-                <RoomTypeListCard/>
+            <Modal
+                open={showAddNewRoom}
+                destroyOnClose
+                cancelButtonProps={{ style: { display: 'none' } }}
+                okButtonProps={{ style: { display: 'none' } }}
+                onCancel={() => setShowAddNewRoom(false)}>
+                    <NewRoomCard />
             </Modal>
-            <Table loading={isLoading} dataSource={rooms} columns={[
+
+            <Modal
+                open={showRoomTypeList}
+                destroyOnClose
+                cancelButtonProps={{ style: { display: 'none' } }}
+                okButtonProps={{ style: { display: 'none' } }}
+                onCancel={() => setShowRoomTypeList(false)}>
+                    <RoomTypeListCard onChange={setRoomTypes} />
+            </Modal>
+
+            <Table loading={isLoading} dataSource={rooms} bordered columns={[
                 {
                     key: 'name',
                     title: t('room_name'),

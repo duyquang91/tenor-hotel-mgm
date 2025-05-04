@@ -5,7 +5,6 @@ export interface RoomModelType {
     name: string
     description: string
     imageUrl: string
-    numberOfBeds: number
     roomType: RoomType
     status: RoomStatusType
 }

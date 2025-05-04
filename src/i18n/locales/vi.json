@@ -51,5 +51,6 @@
   "action": "Thao Tác",
   "error": "Lỗi",
   "add_new_room": "Thêm Phòng Mới",
-  "add_new_room_type": "Thêm Loại Phòng Mới"
+  "add_new_room_type": "Thêm Loại Phòng Mới",
+  "success": "Thành Công"
 }
