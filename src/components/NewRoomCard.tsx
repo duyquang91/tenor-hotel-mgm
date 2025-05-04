@@ -3,13 +3,14 @@ import { useTranslation } from "react-i18next"
 import * as Icons from "@ant-design/icons"
 import * as Repo from "../repository/repository"
 import { use, useEffect, useState } from "react"
-import { RoomType } from "../models/RoomModel"
+import { RoomModelType, RoomType } from "../models/RoomModel"
 
-export const NewRoomCard: React.FC = () => { 
-    const [ t ] = useTranslation()
+export const NewRoomCard: React.FC<{ onSuccess: (rooms:RoomModelType[]) => void }> = (props) => {
+    const [t] = useTranslation()
     const [roomTypes, setRoomTypes] = useState<RoomType[]>([])
     const { message } = App.useApp()
-    
+    const [loading, setLoading] = useState(false)
+
     useEffect(() => {
         Repo.getAllRoomTypes()
             .then((roomTypes) => {
@@ -20,33 +21,46 @@ export const NewRoomCard: React.FC = () => {
             })
     }, [])
 
+    const onFormFinish = (room: RoomModelType) => { 
+        setLoading(true)
+        Repo.updateOrCreateRoom(room)
+            .then((rooms) => {
+                message.success(t("success"))
+                props.onSuccess(rooms)
+            })
+            .catch((error) => {
+                message.error(error.message)
+            })
+            .finally(() => {
+                setLoading(false)
+            })
+    }
+
     return (
-        <Card title={t('add_new_room')} style={{ margin: 16 }}>
-            <Form layout="vertical">
-                <Form.Item label="id" name="id" required>
-                    <Input allowClear/>
-                </Form.Item>
-                <Form.Item label={t('name')} name="name" required>
-                    <Input allowClear/>
-                </Form.Item>
-                <Form.Item label="description" name="description">
-                    <Input allowClear/>
-                </Form.Item>
-                <Form.Item label="room_type" name="room_type" required>
-                    <Select>
-                        {roomTypes.map((roomType) => (
-                            <Select.Option key={roomType.id} value={roomType.id}>
-                                {roomType.name}
-                            </Select.Option>
-                        ))}
-                    </Select>
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit">
-                        <Icons.PlusOutlined/>
-                    </Button>
-                </Form.Item>
-            </Form>
-        </Card>
+        <Form layout="vertical" onFinish={ onFormFinish }>
+            <Form.Item label="id" name="id" rules={[{ required: true, whitespace: true }]}>
+                <Input allowClear />
+            </Form.Item>
+            <Form.Item label={t('name')} name="name" rules={[{ required: true, whitespace: true }]}>
+                <Input allowClear />
+            </Form.Item>
+            <Form.Item label={t("description")} name="description">
+                <Input allowClear />
+            </Form.Item>
+            <Form.Item label={t('room_type')} name="roomTypeId" rules={[{ required: true, whitespace: true }]}>
+                <Select>
+                    {roomTypes.map((roomType) => (
+                        <Select.Option key={roomType.id} value={roomType.id}>
+                            {roomType.name}
+                        </Select.Option>
+                    ))}
+                </Select>
+            </Form.Item>
+            <Form.Item>
+                <Button loading={loading} type="primary" htmlType="submit">
+                    <Icons.PlusOutlined />
+                </Button>
+            </Form.Item>
+        </Form>
     )
 }

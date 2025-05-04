@@ -47,13 +47,13 @@ export const RoomTypeListCard: React.FC<{ onChange: (roomTypes: RoomType[]) => v
     return (
         <Space direction='vertical' style={{ width: '100%' }}>
             <Form style={{ paddingTop: 16 }} labelCol={{ span: 5 }} labelAlign='left' form={form} layout='horizontal' onFinish={addNewRoomType}>
-                <Form.Item label="id" name="id" rules={[{ required: true, whitespace: true, message: t('required') }]}>
+                <Form.Item label="id" name="id" rules={[{ required: true, whitespace: true }]}>
                     <Input allowClear />
                 </Form.Item>
-                <Form.Item label={t('name')} name="name" rules={[{ required: true, whitespace: true, message: t('required') }]}>
+                <Form.Item label={t('name')} name="name" rules={[{ required: true, whitespace: true}]}>
                     <Input allowClear />
                 </Form.Item>
-                <Form.Item label="description" name="description">
+                <Form.Item label={t("description")} name="description">
                     <Input allowClear />
                 </Form.Item>
                 <Form.Item>
@@ -71,13 +71,14 @@ export const RoomTypeListCard: React.FC<{ onChange: (roomTypes: RoomType[]) => v
                 dataSource={roomTypes}
                 columns={[
                     { title: 'id', dataIndex: 'id' },
-                    { title: 'name', dataIndex: 'name' },
-                    { title: 'description', dataIndex: 'description' },
+                    { title: t('name'), dataIndex: 'name' },
+                    { title: t('description'), dataIndex: 'description' },
                     {
-                        title: 'action',
+                        title: t('action'),
                         render: (text, record) =>
                             <Button
                                 size='small'
+                                danger
                                 onClick={() => { 
                                     setIsLoading(true)
                                     Repo.deleteRoomType(record.id)

@@ -5,8 +5,19 @@ export interface RoomModelType {
     name: string
     description: string
     imageUrl: string
-    roomType: RoomType
-    status: RoomStatusType
+    roomTypeId: string
+    status?: string
+}
+
+export interface RoomType {
+    id: string
+    name: string
+    description: string | undefined
+}
+
+export interface RoomStatusType {
+    key: string
+    color: string
 }
 
 export enum RoomStatusEnum {
@@ -17,13 +28,20 @@ export enum RoomStatusEnum {
     reserved = 'reserved'
 }
 
-export interface RoomStatusType {
-    key: string
-    color: string
+export const getStatusColor = (status: string): string => { 
+    switch (status) {
+        case RoomStatusEnum.available:
+            return Colors.green[5]
+        case RoomStatusEnum.occupied:
+            return Colors.red[5]
+        case RoomStatusEnum.unavailable:
+            return Colors.volcano[5]
+        case RoomStatusEnum.cleaning:
+            return Colors.blue[5]
+        case RoomStatusEnum.reserved:
+            return Colors.orange[5]
+        default:
+            return Colors.green[5]
+    }
 }
 
-export interface RoomType {
-    id: string
-    name: string
-    description: string | undefined
-}

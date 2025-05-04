@@ -1,42 +1,60 @@
-import { App, Button, Card, Dropdown, Flex, Space, Table, Tag, Typography, Modal } from "antd"
+import { App, Button, Card, Dropdown, Flex, Space, Table, Tag, Typography, Modal, message } from "antd"
 import { useTranslation } from "react-i18next"
 import { useAppDispatch, useAppSelector } from "../redux/hooks"
-import { RoomStatusEnum, RoomType } from "../models/RoomModel"
+import { getStatusColor, RoomModelType, RoomStatusEnum, RoomType } from "../models/RoomModel"
 import Icon, * as Icons from "@ant-design/icons"
 import { useEffect, useState } from "react"
-import { fetchAllRooms } from "../redux/slices/roomsSlice"
 import * as Repo from "../repository/repository"
 import { RoomTypeListCard } from "./RoomTypeListCard"
 import { NewRoomCard } from "./NewRoomCard"
 
 const RoomListCard: React.FC = () => {
     const { t } = useTranslation()
-    const { isLoading, rooms, error } = useAppSelector(state => state.rooms)
-    const dispatch = useAppDispatch()
     const { modal } = App.useApp()
     const [roomTypes, setRoomTypes] = useState<RoomType[]>([])
     const [showRoomTypeList, setShowRoomTypeList] = useState(false)
     const [showAddNewRoom, setShowAddNewRoom] = useState(false)
+    const [rooms, setRooms] = useState<RoomModelType[]>([])
+    const [isLoading, setIsLoading] = useState(false)
 
-    useEffect(() => {
-        dispatch(fetchAllRooms())
+    const reloadData = () => {
+        setIsLoading(true)
         Repo.getAllRoomTypes()
             .then((roomTypes) => {
                 setRoomTypes(roomTypes)
+                Repo.getAllRooms()
+                    .then((rooms) => { setRooms(rooms) })
+                    .catch((error) => { modal.error({ title: t('error'), content: t(error) }) })
+                    .finally(() => { setIsLoading(false) })
             })
             .catch((error) => {
                 modal.error({ title: t('error'), content: t(error) })
+                setIsLoading(false)
             })
-    }, [dispatch])
+    }
+
+    const deleteRoom = (record: RoomModelType) => {
+        setIsLoading(true)
+        Repo.deleteRoom(record.id)
+            .then((rooms) => {
+                message.success(t('success'))
+                setRooms(rooms)
+            })
+            .catch((error) => {
+                message.error(error.message)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
+    }
+
+    const find = (roomTypeId: string): RoomType | undefined => {
+        return roomTypes.find((roomType) => roomType.id === roomTypeId)
+    }
 
     useEffect(() => {
-        if (error) {
-            modal.error({
-                title: t('error'),
-                content: t(error)
-            })
-        }
-    }, [modal, t, error])
+        reloadData()
+    }, [])
 
     const title = (
         <Flex justify="space-between" align="center">
@@ -57,9 +75,9 @@ const RoomListCard: React.FC = () => {
                             onClick: () => { setShowRoomTypeList(true) }
                         }]
                 }}>
-                    <Button title={t('create')}><Icons.PlusOutlined /></Button>
+                    <Button title={t('create')} onClick={_ => setShowAddNewRoom(true)}><Icons.PlusOutlined /></Button>
                 </Dropdown>
-                <Button title={t('refresh')} onClick={() => dispatch(fetchAllRooms())}><Icons.ReloadOutlined /></Button>
+                <Button title={t('refresh')} onClick={_ => reloadData}><Icons.ReloadOutlined /></Button>
             </Space>
         </Flex>
     )
@@ -67,12 +85,13 @@ const RoomListCard: React.FC = () => {
     return (
         <Card title={title}>
             <Modal
+                title={t('add_new_room')}
                 open={showAddNewRoom}
                 destroyOnClose
                 cancelButtonProps={{ style: { display: 'none' } }}
                 okButtonProps={{ style: { display: 'none' } }}
                 onCancel={() => setShowAddNewRoom(false)}>
-                    <NewRoomCard />
+                <NewRoomCard onSuccess={rooms => { setRooms(rooms); setShowAddNewRoom(false) }} />
             </Modal>
 
             <Modal
@@ -82,26 +101,36 @@ const RoomListCard: React.FC = () => {
                 cancelButtonProps={{ style: { display: 'none' } }}
                 okButtonProps={{ style: { display: 'none' } }}
                 onCancel={() => setShowRoomTypeList(false)}>
-                    <RoomTypeListCard onChange={setRoomTypes} />
+                <RoomTypeListCard onChange={setRoomTypes} />
             </Modal>
 
             <Table loading={isLoading} dataSource={rooms} bordered columns={[
+                {
+                    key: 'id',
+                    title: 'id',
+                    dataIndex: 'id'
+                },
                 {
                     key: 'name',
                     title: t('room_name'),
                     dataIndex: 'name'
                 },
                 {
-                    key: 'roomType',
+                    key: 'description',
+                    title: t('description'),
+                    dataIndex: 'description'
+                },
+                {
+                    key: 'roomTypeId',
                     width: 150,
                     title: t('room_type'),
-                    dataIndex: 'roomType',
-                    render: (roomType) => <Typography.Text>{t(roomType)}</Typography.Text>,
-                    filters: roomTypes.map((roomType) => ({ text: t(roomType.name), value: roomType.id })),
+                    dataIndex: 'roomTypeId',
+                    render: (roomTypeId) => <Typography.Text>{find(roomTypeId)?.name}</Typography.Text>,
+                    filters: roomTypes.map((roomType) => ({ text: roomType.name, value: roomType.id })),
                     filterMode: 'menu',
                     filterSearch: true,
                     onFilter(value, record) {
-                        return record.roomType.id === value
+                        return record.roomTypeId === value
                     }
                 },
                 {
@@ -109,12 +138,12 @@ const RoomListCard: React.FC = () => {
                     width: 150,
                     title: t('status'),
                     dataIndex: 'status',
-                    render: (status) => <Tag key={status} color={status.color}> {t(status)}</Tag>,
+                    render: (status) => <Tag color={getStatusColor(status)}> {t(status)} </Tag>,
                     filters: Object.keys(RoomStatusEnum).map((status) => ({ text: t(status), value: status })),
                     filterMode: 'menu',
                     filterSearch: true,
                     onFilter(value, record) {
-                        return record.status.key === value
+                        return record.status === value
                     }
                 },
                 {
@@ -122,11 +151,14 @@ const RoomListCard: React.FC = () => {
                     title: t('action'),
                     dataIndex: 'action',
                     width: 150,
-                    render: (text, record) => (
+                    fixed: 'right',
+                    render: (_, record) => (
                         <Space size={0}>
-                            <Button disabled={record.status.key !== RoomStatusEnum.available} size="small"> <Icons.UserAddOutlined /> </Button>
-                            <Button disabled={record.status.key !== RoomStatusEnum.occupied} size="small"> <Icons.UserDeleteOutlined /> </Button>
-                            <Button disabled={record.status.key === RoomStatusEnum.cleaning} size="small"> <Icons.ClearOutlined /> </Button>
+                            <Button disabled={record.status !== RoomStatusEnum.available} size="small"> <Icons.UserAddOutlined /> </Button>
+                            <Button disabled={record.status !== RoomStatusEnum.occupied} size="small"> <Icons.UserDeleteOutlined /> </Button>
+                            <Button disabled={record.status === RoomStatusEnum.cleaning} size="small"> <Icons.ClearOutlined /> </Button>
+                            <Button danger size="small" onClick={_ => deleteRoom(record)}> <Icons.DeleteOutlined />
+                            </Button>
                         </Space>
                     )
                 }

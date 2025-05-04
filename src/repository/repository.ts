@@ -9,18 +9,19 @@ export const getAllRooms = (): Promise<RoomModelType[]> => {
     })
 }
 
-export const updateOrCreateRoom = (room: RoomModelType): Promise<RoomModelType> => {
+export const updateOrCreateRoom = (room: RoomModelType): Promise<RoomModelType[]> => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             const rooms: RoomModelType[] = JSON.parse(localStorage.getItem("rooms") || "[]")
             const index = rooms.findIndex(r => r.id === room.id)
             if (index === -1) {
+                room.status = room.status || "available"
                 rooms.push(room)
             } else { 
                 rooms[index] = room
             }
             localStorage.setItem("rooms", JSON.stringify(rooms))
-            resolve(room)
+            resolve(rooms)
         }, 1000)
     })
 }

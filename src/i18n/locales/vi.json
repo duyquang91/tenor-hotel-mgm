@@ -53,5 +53,7 @@
   "add_new_room": "Thêm Phòng Mới",
   "add_new_room_type": "Thêm Loại Phòng Mới",
   "success": "Thành Công",
-  "required": "Bắt Buộc"
+  "required": "Bắt Buộc",
+  "name": "Tên",
+  "description": "Mô Tả"
 }
