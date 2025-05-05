@@ -16,6 +16,7 @@ const RoomListCard: React.FC = () => {
     const [showAddNewRoom, setShowAddNewRoom] = useState(false)
     const [rooms, setRooms] = useState<RoomModelType[]>([])
     const [isLoading, setIsLoading] = useState(false)
+    const { user } = useAppSelector((state) => state.auth)
 
     const reloadData = () => {
         setIsLoading(true)
@@ -62,7 +63,7 @@ const RoomListCard: React.FC = () => {
             <Space direction="horizontal">
                 <Dropdown placement="bottomRight" menu={{
                     items: [
-                        {
+                        { 
                             icon: <Icons.FileAddOutlined />,
                             key: 'add_new_room',
                             label: t('add_new_room'),
@@ -75,9 +76,9 @@ const RoomListCard: React.FC = () => {
                             onClick: () => { setShowRoomTypeList(true) }
                         }]
                 }}>
-                    <Button title={t('create')} onClick={_ => setShowAddNewRoom(true)}><Icons.PlusOutlined /></Button>
+                    <Button style={user?.role !== 'admin' ? { display: 'none' } : undefined} title={t('create')}><Icons.PlusOutlined /></Button>
                 </Dropdown>
-                <Button title={t('refresh')} onClick={_ => reloadData}><Icons.ReloadOutlined /></Button>
+                <Button title={t('refresh')} onClick={_ => reloadData()}><Icons.ReloadOutlined /></Button>
             </Space>
         </Flex>
     )

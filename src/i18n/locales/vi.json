@@ -55,5 +55,7 @@
   "success": "Thành Công",
   "required": "Bắt Buộc",
   "name": "Tên",
-  "description": "Mô Tả"
+  "description": "Mô Tả",
+  "change_password": "Đổi Mật Khẩu",
+  "administrator": "Quản Trị Viên"
 }
